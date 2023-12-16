@@ -1,5 +1,6 @@
-import {StyleSheet, SafeAreaView, Image, Pressable, Button, Text} from 'react-native';
+import {StyleSheet, SafeAreaView, Image, View, Text, TouchableOpacity } from 'react-native';
 import React from 'react';
+import { StatusBar } from "expo-status-bar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ContentRoutes } from '../naviagtions/routes';
 import { useNavigation } from '@react-navigation/native';
@@ -14,9 +15,8 @@ import { useNavigation } from '@react-navigation/native';
 //   GOOGLE_REDIRECT_URI,
 // } from '../utils/GoogleConfig';
 
-export default function Login() {
+const LoginPage = ({ }) => {
   const navigation = useNavigation();
-
   const gohome = async () => {
     const tokenData = {
       accessToken: "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ3b2RuZDAxMzFAbmF2ZXIuY29tIiwiYXV0aCI6IlVTRVIsVVNFUiIsImlzQWRkaXRpb25hbEluZm9Qcm92aWRlZCI6dHJ1ZSwiZXhwIjoxNzAzMDk0Njg0fQ.LFTMKULCb1cLpvK0L2wTovUpS6jseUfuGk0GmMZqQuAVisTL7xBL9414wJinSASlrZclw5UIjdLHEpjjoy6Ywg",
@@ -70,28 +70,100 @@ export default function Login() {
   // };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Button title="gohome" onPress={() => gohome()} />
-      <Pressable onPress={() => gohome()}>
+    <View style={styles.container}>
+      <View style={styles.header}>
         <Image
-          source={{
-            uri: `https://kiwes-bucket.s3.ap-northeast-2.amazonaws.com/main/google_login.png`,
-          }}
-          style={styles.oauth}
-          resizeMode="contain"
+            source={require("../images/mainBar.png")}
+            style={styles.headerImage}
         />
-      </Pressable>
-    </SafeAreaView>
+      </View>
+      <StatusBar style="auto" />
+
+      <View style={styles.imageContainer}>
+        <Image
+            source={require("../images/fish.png")}
+            style={styles.image}
+        />
+      </View>
+      <SafeAreaView style={styles.bottomBar}>
+        <TouchableOpacity style={styles.googleButton} onPress={gohome}>
+          <Image source={require("../images/google.png")} style={styles.googleIcon} />
+          <Text style={styles.buttonText}>Sign in with Google</Text>
+        </TouchableOpacity>
+      </SafeAreaView>
+    </View>
   );
-}
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#FFF7DC",
+    alignItems: "center",
+    justifyContent: "center",
   },
-  oauth: {
-    aspectRatio: 5,
-    width: '70%',
+  header: {
+    height: 200,
+    width: "100%",
+    top: -10,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  headerImage: {
+    height: "110%",
+    width: "100%",
+  },
+  imageContainer: {
+    top: -3,
+    right: 0,
+    height: 360,
+    width: 360,
+    alignItems: "center",
+    justifyContent: "flex-start",
+  },
+  image: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+    resizeMode: "contain",
+  },
+  googleButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#4285F4",
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: "#000000",
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    marginVertical: 15,
+    bottom: -15,
+  },
+  googleIcon: {
+    width: 30,
+    height: 30,
+    marginRight: 10,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: "#FFFFFF",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  bottomBar: {
+    backgroundColor: "#F2D98D",
+    width: "100%",
+    height: 150,
+    top: 25,
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  resultContainer: {
+    backgroundColor: "#000000",
   },
 });
+
+export default LoginPage;
