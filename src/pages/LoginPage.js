@@ -1,17 +1,25 @@
-import {StyleSheet, SafeAreaView, Image, Pressable, Button} from 'react-native';
-import React from 'react';
-// import { ContentRoutes } from '../naviagtions/routes';
-import { useNavigation } from '@react-navigation/native';
-import { LoginGoogle } from '../component/axios/LoginRequest';
+import {
+  StyleSheet,
+  SafeAreaView,
+  Image,
+  Pressable,
+  Button,
+} from "react-native";
+import React from "react";
+import { ContentRoutes } from "../naviagtions/routes";
+import { useNavigation } from "@react-navigation/native";
+import { LoginGoogle } from "../component/axios/LoginRequest";
 
 export default function Login() {
   const navigation = useNavigation();
 
   const gohome = async () => {
     // await AsyncStorage.setItem('userData', JSON.stringify(tokenData));
-    console.log("test")
-    LoginGoogle().then((res)=>{console.log(res.data.message);});
-    // navigation.replace(ContentRoutes.Main.name);
+    console.log("test");
+    LoginGoogle().then((res) => {
+      console.log(res.data.message);
+    });
+    navigation.replace(ContentRoutes.Main.name);
   };
 
   return (
@@ -33,11 +41,11 @@ export default function Login() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   oauth: {
     aspectRatio: 5,
-    width: '70%',
+    width: "70%",
   },
 });
