@@ -2,6 +2,7 @@
   "expo": {
     "name": "Webpro-Front",
     "slug": "Webpro-Front",
+    "scheme":"server.app.webpro",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -21,10 +22,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "server.app.webpro"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "f40c445b-8c9a-4d74-84a9-7ac027f4ff11"
+      }
     }
   }
 }

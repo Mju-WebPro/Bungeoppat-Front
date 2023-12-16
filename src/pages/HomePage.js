@@ -8,7 +8,7 @@ const HomePage = ({ navigation }) => {
             <View style={styles.header}>
                 <Image
                     source={require("../images/mainBar.png")}
-                    style={styles.headerimage}
+                    style={styles.headerImage}
                 />
             </View>
             <StatusBar style="auto" />
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
     },
-    headerimage: {
+    headerImage: {
         height: "110%",
         width: "100%",
     },
