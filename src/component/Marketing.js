@@ -1,4 +1,4 @@
-import request from "../../../component/common/axios";
+import request from "./axios/axios";
 
 export const createCampaignPlan = async (data) => {
   return await request.post(`campaign`, data);
