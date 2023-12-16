@@ -1,9 +1,16 @@
-import {StyleSheet, SafeAreaView, Image, View, Text, TouchableOpacity } from 'react-native';
-import React from 'react';
+import {
+  StyleSheet,
+  SafeAreaView,
+  Image,
+  View,
+  Text,
+  TouchableOpacity,
+} from "react-native";
+import React from "react";
 import { StatusBar } from "expo-status-bar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { ContentRoutes } from '../naviagtions/routes';
-import { useNavigation } from '@react-navigation/native';
+import { ContentRoutes } from "../naviagtions/routes";
+import { useNavigation } from "@react-navigation/native";
 // import { LoginGoogle } from '../component/axios/LoginRequest';
 // import {
 //   GoogleSignin,
@@ -15,20 +22,21 @@ import { useNavigation } from '@react-navigation/native';
 //   GOOGLE_REDIRECT_URI,
 // } from '../utils/GoogleConfig';
 
-const LoginPage = ({ }) => {
+const LoginPage = ({}) => {
   const navigation = useNavigation();
   const gohome = async () => {
     const tokenData = {
-      accessToken: "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ3b2RuZDAxMzFAbmF2ZXIuY29tIiwiYXV0aCI6IlVTRVIsVVNFUiIsImlzQWRkaXRpb25hbEluZm9Qcm92aWRlZCI6dHJ1ZSwiZXhwIjoxNzAzMDk0Njg0fQ.LFTMKULCb1cLpvK0L2wTovUpS6jseUfuGk0GmMZqQuAVisTL7xBL9414wJinSASlrZclw5UIjdLHEpjjoy6Ywg",
-      refreshToken: "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MDUzMjY2ODQsInVzZXJJZCI6MX0.aBipDa-GGnewzRxnoG2rSzliN3R778yB231XwTQ4ZRU",
+      accessToken:
+        "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ3b2RuZDAxMzFAbmF2ZXIuY29tIiwiYXV0aCI6IlVTRVIsVVNFUiIsImlzQWRkaXRpb25hbEluZm9Qcm92aWRlZCI6dHJ1ZSwiZXhwIjoxNzAzMDk0Njg0fQ.LFTMKULCb1cLpvK0L2wTovUpS6jseUfuGk0GmMZqQuAVisTL7xBL9414wJinSASlrZclw5UIjdLHEpjjoy6Ywg",
+      refreshToken:
+        "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MDUzMjY2ODQsInVzZXJJZCI6MX0.aBipDa-GGnewzRxnoG2rSzliN3R778yB231XwTQ4ZRU",
       userId: 1,
-      process: "로그인 성공"
-  };
-    await AsyncStorage.setItem('userData', JSON.stringify(tokenData));
+      process: "로그인 성공",
+    };
+    await AsyncStorage.setItem("userData", JSON.stringify(tokenData));
     navigation.replace(ContentRoutes.Main.name);
   };
 
-  
   // const signInWithGoogle = async () => {
   //   GoogleSignin.configure({
   //     webClientId: GOOGLE_WEB_CLIENT_ID,
@@ -73,21 +81,21 @@ const LoginPage = ({ }) => {
     <View style={styles.container}>
       <View style={styles.header}>
         <Image
-            source={require("../images/mainBar.png")}
-            style={styles.headerImage}
+          source={require("../images/mainBar.png")}
+          style={styles.headerImage}
         />
       </View>
       <StatusBar style="auto" />
 
       <View style={styles.imageContainer}>
-        <Image
-            source={require("../images/fish.png")}
-            style={styles.image}
-        />
+        <Image source={require("../images/fish.png")} style={styles.image} />
       </View>
       <SafeAreaView style={styles.bottomBar}>
         <TouchableOpacity style={styles.googleButton} onPress={gohome}>
-          <Image source={require("../images/google.png")} style={styles.googleIcon} />
+          <Image
+            source={require("../images/google.png")}
+            style={styles.googleIcon}
+          />
           <Text style={styles.buttonText}>Sign in with Google</Text>
         </TouchableOpacity>
       </SafeAreaView>
