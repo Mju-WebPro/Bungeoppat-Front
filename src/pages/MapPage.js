@@ -11,13 +11,25 @@ const MapPage = () => {
     };
     const [searchKeyword, setSearchKeyword] = useState('');
     const [region, setRegion] = useState(initialRegion);
-    const storeList = [
-        { id: 1, name: '가게 1' },
-        { id: 2, name: '가게 2' },
-        { id: 3, name: '가게 3' },
-    ];
+    const [storeData, setStoreData] = useState([]);
+    useEffect(() => {
+        fetchStoreData();
+    }, []);
+
+    const fetchStoreData = async () => {
+        try {
+            const response = await fetch('http://192.168.219.107:8080/stores/all');
+            if (!response.ok) {
+                throw new Error('Network response was not ok.');
+            }
+            const data = await response.json();
+            setStoreData(data);
+        } catch (error) {
+            console.error('Error fetching store data:', error);
+        }
+    };
     const handleSearch = () => {
-        const backendEndpoint = `http://192.168.0.30:8080/places/search?keyword=${searchKeyword}`;
+        const backendEndpoint = `http://192.168.219.107:8080/places/search?keyword=${searchKeyword}`;
 
         fetch(backendEndpoint)
             .then((response) => response.json())
@@ -83,11 +95,14 @@ const MapPage = () => {
             <View style={styles.storeListContainer}>
                 <FlatList
                     horizontal
-                    data={storeList}
+                    data={storeData}
                     keyExtractor={(item) => item.id.toString()}
                     renderItem={({ item }) => (
                         <TouchableOpacity style={styles.storeItem}>
-                            <Text>{item.name}</Text>
+                            <Text style={styles.storeItemText}>
+                                <Text style={styles.storeNameText}>{item.storeName}</Text>
+                                <Text>{`\n\n영업 시간: ${item.operateTime}\n${item.menu}`}</Text>
+                            </Text>
                         </TouchableOpacity>
                     )}
                 />
@@ -128,7 +143,7 @@ const styles = StyleSheet.create({
     },
     resetButton: {
         position: 'absolute',
-        bottom: 160,
+        bottom: 165,
         left: 10,
         zIndex: 1,
     },
@@ -138,23 +153,29 @@ const styles = StyleSheet.create({
         resizeMode: 'contain',
     },
     storeListContainer: {
-
         position: 'absolute',
-        top: '76%',
+        top: '75%',
         width: '100%',
-        height: 140,
+        height: 160,
         padding: 10,
     },
     storeItem: {
-        width: 200,
-        padding: 15,
+        width: 240,
+        padding: 25,
         marginRight: 15,
         backgroundColor: 'rgba(0, 0, 0, 0.7)',
         borderRadius: 8,
     },
     storeItemText: {
+        padding: 5,
+        textAlign: 'center',
         color: '#FFFFFF',
         fontWeight: 'bold',
+        fontSize: 14, // 원하는 크기로 조정 가능
+    },
+    storeNameText: {
+        color: 'darkgray', // 원하는 색상으로 변경 가능
+        fontSize: 18, // 가게 이름의 폰트 크기를 18로 지정 (원하는 크기로 조정 가능)
     },
 });
 
