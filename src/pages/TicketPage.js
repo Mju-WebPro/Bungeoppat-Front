@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     sideBar: {
         height: '100%',
         width: '100%',
-        top: -270,
+        top: -310,
         resizeMode: 'contain',
     },
     blackRectangle: {

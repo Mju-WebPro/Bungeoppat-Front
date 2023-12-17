@@ -30,7 +30,7 @@ const MapPage = ({ route, navigation }) => {
 
     const fetchStoreData = async () => {
         try {
-            const response = await fetch('http://192.168.17.186:8080/stores/all');
+            const response = await fetch('http://192.168.0.6:8080/stores/all');
             if (!response.ok) {
                 throw new Error('Network response was not ok.');
             }
@@ -63,6 +63,11 @@ const MapPage = ({ route, navigation }) => {
                 console.error('Error fetching data:', error);
             });
     };
+
+    const goStorePage = (item) => {
+        console.log(item.storeName);
+        navigation.navigate('StoreInfoPage', { item: item });
+    }
 
     const handleReset = async () => {
         setMarkers([]);
@@ -135,7 +140,7 @@ const MapPage = ({ route, navigation }) => {
                         data={storeData}
                         keyExtractor={(item) => item.id.toString()}
                         renderItem={({ item }) => (
-                            <TouchableOpacity style={styles.storeItem}>
+                            <TouchableOpacity style={styles.storeItem} onPress={() => goStorePage(item)}>
                                 <View style={styles.storeItemContent}>
                                     <Text style={styles.storeItemText}>
                                         <Text style={styles.storeNameText}>{item.storeName}</Text>
