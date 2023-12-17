@@ -2,7 +2,7 @@
   "expo": {
     "name": "Webpro-Front",
     "slug": "Webpro-Front",
-    "scheme":"server.app.webpro",
+    "scheme": "server.app.webpro",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -12,9 +12,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },

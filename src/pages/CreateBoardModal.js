@@ -57,7 +57,7 @@ const CreateBoardModal = ({ modalVisible, closeModal }) => {
       quality: 1,
     });
 
-    if (!result.cancelled) {
+    if (!result.canceled) {
       setSelectedImage(result.uri);
     }
   };
