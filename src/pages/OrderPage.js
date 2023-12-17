@@ -1,12 +1,13 @@
 import React from 'react';
 import { Text } from 'react-native';
 
-const HomePage = () => {
+const OrderPage = ({ route, navigation }) => {
+  const { item } = route.params || {};
   return (
     <Text>
-      HomePage
+      OrderPage
     </Text>
   );
 };
 
-export default HomePage;
+export default OrderPage;

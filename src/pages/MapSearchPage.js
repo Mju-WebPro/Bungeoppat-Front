@@ -5,7 +5,7 @@ const MapSearchPage = ({ navigation }) => {
     const [searchKeyword, setSearchKeyword] = useState('');
 
     const handleSearch = () => {
-        navigation.navigate('MapPage', { searchKeyword: searchKeyword });
+        navigation.navigate('MainPage', { searchKeyword: searchKeyword });
     };
 
     return (
