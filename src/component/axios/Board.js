@@ -8,6 +8,6 @@ export const retrieveAllBoard = async () => {
   return await request.get("board/all");
 };
 
-export const retrieveBoardById = async () => {
-  return await request.get("board/{id}");
+export const retrieveBoardById = async (data) => {
+  return await request.get("board/{data}");
 };
