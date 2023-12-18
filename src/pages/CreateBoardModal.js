@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { createBoard } from "../component/axios/Board";
 
 const CreateBoardModal = ({ modalVisible, closeModal }) => {
   const [title, setTitle] = useState("");
@@ -34,9 +33,23 @@ const CreateBoardModal = ({ modalVisible, closeModal }) => {
       title: title,
       content: content,
     };
-    console.log("notImage:", boardRequestDto);
-    createBoard(boardRequestDto).then(() => console.log("SUCCESS"));
+    console.log("data:", boardRequestDto);
+    createBoard(boardRequestDto);
     closeModal();
+  };
+
+  const createBoard = async (boardRequestDto) => {
+    fetch("http://192.168.123.109:8080/board", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
+      body: JSON.stringify(boardRequestDto),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res);
+      });
   };
 
   return (

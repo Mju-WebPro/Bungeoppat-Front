@@ -1,20 +1,25 @@
 import { useState, useEffect } from "react";
 import { TouchableOpacity, View, StyleSheet, Text } from "react-native";
 import CreateBoardModal from "./CreateBoardModal";
-import { retrieveAllBoard } from "../component/axios/Board";
 
 const BoardPage = ({}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [boards, setBoards] = useState([]);
 
   useEffect(() => {
-    retrieveAllBoard().then((res) => {
-      // console.log(res);
-      // console.log(res.data);
-      console.log(res.data.data);
-      setBoards(res.data.data);
-    });
+    retrieveAllBoard().then(console.log("SUCCESS_RETRIEVE"));
   }, []);
+
+  const retrieveAllBoard = async () => {
+    fetch("http://192.168.123.109:8080/board/all", {
+      method: "GET",
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(1, res);
+        setBoards(res.data.data);
+      });
+  };
 
   const openModal = () => {
     setModalVisible(true);
@@ -35,6 +40,7 @@ const BoardPage = ({}) => {
             <View>
               <Text style={styles.title}>{board.title}</Text>
               <Text style={styles.title}>{board.content}</Text>
+              <Text style={styles.title}>{board.date}</Text>
             </View>
           ))}
         <CreateBoardModal modalVisible={modalVisible} closeModal={closeModal} />
