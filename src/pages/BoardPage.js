@@ -10,8 +10,6 @@ const BoardPage = ({}) => {
   useEffect(() => {
     retrieveAllBoard().then((res) => {
       console.log(res);
-      console.log(res.data);
-      console.log(res.data.data);
       setBoards(res.data.data);
     });
   }, []);
@@ -30,12 +28,13 @@ const BoardPage = ({}) => {
         <Text style={styles.title}>게시판</Text>
       </View>
       <View style={styles.boarder}>
-        {boards.map((board) => (
-          <View>
-            <Text style={styles.title}>{board.title}</Text>
-            <Text style={styles.title}>{board.content}</Text>
-          </View>
-        ))}
+        {boards &&
+          boards.map((board) => (
+            <View>
+              <Text style={styles.title}>{board.title}</Text>
+              <Text style={styles.title}>{board.content}</Text>
+            </View>
+          ))}
         <CreateBoardModal modalVisible={modalVisible} closeModal={closeModal} />
       </View>
       <View style={styles.bottomBar}>
