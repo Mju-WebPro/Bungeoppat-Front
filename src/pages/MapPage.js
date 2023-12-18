@@ -4,8 +4,9 @@ import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 
 const MapPage = ({ route, navigation }) => {
-    const { searchKeyword } = route.params || {};
+    const { searchKeyword } =route.params  || {} ;
     const [markers, setMarkers] = useState([]);
+
     const initialRegion = {
         latitude: 37.580234738358605,
         longitude: 126.92282415743652,
@@ -30,47 +31,56 @@ const MapPage = ({ route, navigation }) => {
 
     const fetchStoreData = async () => {
         try {
-            const response = await fetch('http://192.168.0.6:8080/stores/all');
+            const backendEndpoint =  `http://192.168.0.13:8080/stores/near?latitude=${region.latitude}&longitude=${region.longitude}`
+            const response = await fetch(backendEndpoint);
             if (!response.ok) {
                 throw new Error('Network response was not ok.');
             }
             const data = await response.json();
+            setMarkers(data);
             setStoreData(data);
         } catch (error) {
             console.error('Error fetching store data:', error);
         }
     };
 
-    const handleSearch = () => {
-        const backendEndpoint = `http://192.168.17.186:8080/places/search?keyword=${searchKeyword}`;
+    const handleSearch = async () => {
+        try {
+            const backendEndpoint =  `http://192.168.0.13:8080/places/search?keyword=${searchKeyword}`
+            const response = await fetch(backendEndpoint);
+            if (!response.ok) {
+                throw new Error('Network response was not ok.');
+            }
+            const data = await response.json();
 
-        fetch(backendEndpoint)
-            .then((response) => response.json())
-            .then((data) => {
-                setMarkers(data);
-
-                if (data.length > 0) {
-                    const firstMarker = data[0];
-                    setRegion({
-                        latitude: firstMarker.latitude,
-                        longitude: firstMarker.longitude,
-                        latitudeDelta: 0.005,
-                        longitudeDelta: 0.005,
-                    });
+            if (data.length > 0) {
+                const firstMarker = data[0];
+                 setRegion({
+                    latitude: firstMarker.latitude,
+                    longitude: firstMarker.longitude,
+                    latitudeDelta: 0.005,
+                    longitudeDelta: 0.005,
+                });
+                console.log(firstMarker);
+                const backendEndpoint2 =  `http://192.168.0.13:8080/stores/near?latitude=${firstMarker.latitude}&longitude=${firstMarker.longitude}`
+                const response2 = await fetch(backendEndpoint2);
+                if (!response2.ok) {
+                    throw new Error('Network response was not ok.');
                 }
-            })
-            .catch((error) => {
-                console.error('Error fetching data:', error);
-            });
+                const data2 = await response2.json();
+                setMarkers(data2);
+                setStoreData(data2);
+        }
+        } catch (error) {
+            console.error('Error fetching store data:', error);
+        }
     };
 
     const goStorePage = (item) => {
-        console.log(item.storeName);
         navigation.navigate('StoreInfoPage', { item: item });
     }
 
-    const handleReset = async () => {
-        setMarkers([]);
+    const handleinit = async () => {
         try {
             const { status } = await Location.requestForegroundPermissionsAsync();
             if (status === 'granted') {
@@ -82,6 +92,7 @@ const MapPage = ({ route, navigation }) => {
                     latitudeDelta: 0.01,
                     longitudeDelta: 0.01,
                 });
+                fetchStoreData();
             } else {
                 console.log('Location permission denied');
             }
@@ -89,7 +100,9 @@ const MapPage = ({ route, navigation }) => {
             console.warn(err);
         }
     };
-
+    const handleReset = async () => {
+        navigation.replace('MainPage');
+    }
     const handleAddressPress = () => {
         navigation.navigate('MapSearchPage');
     };
@@ -104,7 +117,7 @@ const MapPage = ({ route, navigation }) => {
                             latitude: marker.latitude,
                             longitude: marker.longitude,
                         }}
-                        title={marker.placeName}>
+                        title={marker.storeName}>
                         <Image
                             source={require('../images/fish.png')}
                             style={{
@@ -210,7 +223,7 @@ const styles = StyleSheet.create({
     },
     storeListContainer: {
         position: 'absolute',
-        top: '74%',
+        top: '80%',
         width: '100%',
         height: 160,
         padding: 10,
