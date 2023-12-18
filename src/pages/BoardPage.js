@@ -9,8 +9,8 @@ const BoardPage = ({}) => {
 
   useEffect(() => {
     retrieveAllBoard().then((res) => {
-      console.log(res);
-      console.log(res.data);
+      // console.log(res);
+      // console.log(res.data);
       console.log(res.data.data);
       setBoards(res.data.data);
     });
