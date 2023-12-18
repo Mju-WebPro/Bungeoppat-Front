@@ -1,54 +1,61 @@
-import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { ContentRoutes } from './routes';
+import React from "react";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { ContentRoutes } from "./routes";
 // import HomePage from '../pages/HomePage';
 // import StoreInfoPage from '../pages/StoreinfoPage';
 // import StoreListPage from '../pages/StoreListPage';
-import OrderPage from '../pages/OrderPage';
-import TicketPage from '../pages/TicketPage';
-import MapStack from './MapStack';
-import { Image } from 'react-native';
+import OrderPage from "../pages/OrderPage";
+import TicketPage from "../pages/TicketPage";
+import BoardPage from "../pages/BoardPage";
+import MapStack from "./MapStack";
+import { Image } from "react-native";
 
 const Tab = createBottomTabNavigator();
 
 const ContentTab = () => {
-    const getTabBarIcon = (routeName, focused) => {
-        let iconSource;
-        switch (routeName) {
-            case ContentRoutes.MapStack.name:
-                iconSource = focused ? require('../images/homeIcon.png') : require('../images/homeIcon.png');
-                break;
-            case ContentRoutes.OrderPage.name:
-                iconSource = focused ? require('../images/fish.png') : require('../images/fish.png');
-                break;
-            case ContentRoutes.TickPage.name:
-                iconSource = focused ? require('../images/fish.png') : require('../images/fish.png');
-                break;
-            default:
-                iconSource = null;
-                break;
-        }
-        return <Image source={iconSource} style={{ width: 24, height: 24 }} />;
-    };
+  const getTabBarIcon = (routeName, focused) => {
+    let iconSource;
+    switch (routeName) {
+      case ContentRoutes.MapStack.name:
+        iconSource = focused
+          ? require("../images/homeIcon.png")
+          : require("../images/homeIcon.png");
+        break;
+      case ContentRoutes.OrderPage.name:
+        iconSource = focused
+          ? require("../images/fish.png")
+          : require("../images/fish.png");
+        break;
+      case ContentRoutes.TickPage.name:
+        iconSource = focused
+          ? require("../images/fish.png")
+          : require("../images/fish.png");
+        break;
+      default:
+        iconSource = null;
+        break;
+    }
+    return <Image source={iconSource} style={{ width: 24, height: 24 }} />;
+  };
 
-    return (
-        <Tab.Navigator
-            initialRouteName={ContentRoutes.MapStack.name}
-            screenOptions={({ route, focused }) => ({
-                tabBarIcon: ({ focused }) => getTabBarIcon(route.name, focused),
-                headerShown: false,
-            })}
-            // tabBarOptions={{
-            //     activeTintColor: 'tomato',
-            //     inactiveTintColor: 'gray',
-            // }}
-        >
-            <Tab.Screen name={ContentRoutes.MapStack.name} component={MapStack} />
-            <Tab.Screen name={ContentRoutes.OrderPage.name} component={OrderPage} />
-            <Tab.Screen name={ContentRoutes.TickPage.name} component={TicketPage} />
-        </Tab.Navigator>
-    );
+  return (
+    <Tab.Navigator
+      initialRouteName={ContentRoutes.MapStack.name}
+      screenOptions={({ route, focused }) => ({
+        tabBarIcon: ({ focused }) => getTabBarIcon(route.name, focused),
+        headerShown: false,
+      })}
+      // tabBarOptions={{
+      //     activeTintColor: 'tomato',
+      //     inactiveTintColor: 'gray',
+      // }}
+    >
+      <Tab.Screen name={ContentRoutes.MapStack.name} component={MapStack} />
+      <Tab.Screen name={ContentRoutes.OrderPage.name} component={OrderPage} />
+      <Tab.Screen name={ContentRoutes.TickPage.name} component={TicketPage} />
+      <Tab.Screen name={ContentRoutes.BoardPage.name} component={BoardPage} />
+    </Tab.Navigator>
+  );
 };
 
 export default ContentTab;
-

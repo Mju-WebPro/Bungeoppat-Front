@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createBoard } from "../component/axios/Board";
 
 const CreateBoardModal = ({ modalVisible, closeModal }) => {
@@ -22,6 +23,15 @@ const CreateBoardModal = ({ modalVisible, closeModal }) => {
     closeModal();
   };
 
+  const getUserId = async () => {
+    const userData = await AsyncStorage.getItem("userData");
+    if (userData) {
+      const data = JSON.parse(userData);
+      const userId = data.userId;
+      return userId;
+    }
+  };
+
   const handleSave = async () => {
     let formData = null;
     if (selectedImage) {
@@ -29,9 +39,10 @@ const CreateBoardModal = ({ modalVisible, closeModal }) => {
     }
 
     if (formData || !selectedImage) {
-      createBoard(title, content, formData).then(() =>
-        alert("게시판 생성 성공")
-      );
+      createBoard(formData)
+        .then(() => console.log("SUCCESS"))
+        .catch((error) => console.error("Error creating board:", error));
+
       setSelectedImage(null);
       closeModal();
     } else {
@@ -41,11 +52,15 @@ const CreateBoardModal = ({ modalVisible, closeModal }) => {
 
   const createFormData = async (imageUri) => {
     const formData = new FormData();
-    formData.append("file", {
+    formData.append("userId", await getUserId());
+    formData.append("title", title);
+    formData.append("content", content);
+    formData.append("multipartFile", {
       uri: imageUri,
       type: "image/jpeg",
-      name: "image.jpg",
+      name: "testImage",
     });
+
     return formData;
   };
 
