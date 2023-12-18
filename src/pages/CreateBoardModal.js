@@ -11,7 +11,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { createBoard } from "../component/axios/Board";
+import { createBoard, createBoardNotImage } from "../component/axios/Board";
 
 const CreateBoardModal = ({ modalVisible, closeModal }) => {
   const [title, setTitle] = useState("");
@@ -27,7 +27,7 @@ const CreateBoardModal = ({ modalVisible, closeModal }) => {
     const userData = await AsyncStorage.getItem("userData");
     if (userData) {
       const data = JSON.parse(userData);
-      const userId = data.userId;
+      userId = data.userId;
       return userId;
     }
   };
@@ -36,29 +36,33 @@ const CreateBoardModal = ({ modalVisible, closeModal }) => {
     let formData = null;
     if (selectedImage) {
       formData = await createFormData(selectedImage);
-    }
-
-    if (formData || !selectedImage) {
+      console.log("imageExist:", formData);
       createBoard(formData)
         .then(() => console.log("SUCCESS"))
         .catch((error) => console.error("Error creating board:", error));
-
       setSelectedImage(null);
       closeModal();
-    } else {
-      console.log("이미지를 선택하세요.");
+    } else if (selectedImage == null) {
+      const userId = await getUserId();
+      const boardRequestDto = {
+        userId: userId,
+        title: title,
+        content: content,
+      };
+      console.log("notImage:", boardRequestDto);
+      createBoardNotImage(boardRequestDto).then(() => console.log("SUCCESS"));
+      closeModal();
     }
   };
 
   const createFormData = async (imageUri) => {
     const formData = new FormData();
-    formData.append("userId", await getUserId());
-    formData.append("title", title);
-    formData.append("content", content);
+    const userId = await getUserId();
+    formData.append("boardRequest", JSON.stringify({ userId, title, content }));
     formData.append("multipartFile", {
       uri: imageUri,
       type: "image/jpeg",
-      name: "testImage",
+      name: imageUri.fileName,
     });
 
     return formData;
