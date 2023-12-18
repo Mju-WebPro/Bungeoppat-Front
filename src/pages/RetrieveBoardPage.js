@@ -1,7 +1,8 @@
 import { retrieveBoardById } from "../component/axios/Board";
 import { useEffect, useState } from "react";
+import { Modal } from "react-native";
 
-const RetrieveBoardPage = () => {
+const RetrieveBoardPage = ({ modalVisible, closeModal }) => {
   const [board, setBoard] = useState();
 
   useEffect(() => {
@@ -11,9 +12,12 @@ const RetrieveBoardPage = () => {
   });
 
   return (
-    <View>
-      <Text>Board: {board.title}</Text>
-    </View>
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={modalVisible}
+      onRequestClose={closeModal}
+    ></Modal>
   );
 };
 

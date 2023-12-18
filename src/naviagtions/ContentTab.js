@@ -1,6 +1,6 @@
-import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { ContentRoutes } from './routes';
+import React from "react";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { ContentRoutes } from "./routes";
 // import HomePage from '../pages/HomePage';
 // import StoreInfoPage from '../pages/StoreinfoPage';
 // import StoreListPage from '../pages/StoreListPage';
@@ -51,4 +51,3 @@ const ContentTab = () => {
 };
 
 export default ContentTab;
-
