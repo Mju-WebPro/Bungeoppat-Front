@@ -3,23 +3,18 @@ import {
   View,
   Modal,
   TextInput,
-  TouchableOpacity,
   Text,
   StyleSheet,
-  Image,
+  TouchableOpacity,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import * as ImagePicker from "expo-image-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { createBoard, createBoardNotImage } from "../component/axios/Board";
+import { createBoard } from "../component/axios/Board";
 
 const CreateBoardModal = ({ modalVisible, closeModal }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [selectedImage, setSelectedImage] = useState(null);
 
   const cancle = () => {
-    setSelectedImage(null);
     closeModal();
   };
 
@@ -33,52 +28,15 @@ const CreateBoardModal = ({ modalVisible, closeModal }) => {
   };
 
   const handleSave = async () => {
-    let formData = null;
-    if (selectedImage) {
-      formData = await createFormData(selectedImage);
-      console.log("imageExist:", formData);
-      createBoard(formData)
-        .then(() => console.log("SUCCESS"))
-        .catch((error) => console.error("Error creating board:", error));
-      setSelectedImage(null);
-      closeModal();
-    } else if (selectedImage == null) {
-      const userId = await getUserId();
-      const boardRequestDto = {
-        userId: userId,
-        title: title,
-        content: content,
-      };
-      console.log("notImage:", boardRequestDto);
-      createBoardNotImage(boardRequestDto).then(() => console.log("SUCCESS"));
-      closeModal();
-    }
-  };
-
-  const createFormData = async (imageUri) => {
-    const formData = new FormData();
     const userId = await getUserId();
-    formData.append("boardRequest", JSON.stringify({ userId, title, content }));
-    formData.append("multipartFile", {
-      uri: imageUri,
-      type: "image/jpeg",
-      name: imageUri.fileName,
-    });
-
-    return formData;
-  };
-
-  const uploadImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [16, 16],
-      quality: 1,
-    });
-
-    if (!result.canceled) {
-      setSelectedImage(result.uri);
-    }
+    const boardRequestDto = {
+      userId: userId,
+      title: title,
+      content: content,
+    };
+    console.log("notImage:", boardRequestDto);
+    createBoard(boardRequestDto).then(() => console.log("SUCCESS"));
+    closeModal();
   };
 
   return (
@@ -104,25 +62,6 @@ const CreateBoardModal = ({ modalVisible, closeModal }) => {
             multiline={true}
             textAlignVertical="top"
           />
-          {selectedImage && (
-            <View style={{ position: "relative" }}>
-              <Image
-                source={{ uri: selectedImage }}
-                style={{ width: 240, height: 200, marginBottom: 20 }}
-              />
-              <TouchableOpacity
-                style={{ position: "absolute", top: -15, right: 30 }}
-                onPress={() => setSelectedImage(null)}
-              >
-                <Ionicons name="close-circle-outline" size={30} color="black" />
-              </TouchableOpacity>
-            </View>
-          )}
-          <View style={styles.button}>
-            <TouchableOpacity style={styles.saveButton} onPress={uploadImage}>
-              <Text style={styles.saveButtonText}>이미지</Text>
-            </TouchableOpacity>
-          </View>
           <View style={styles.button}>
             <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
               <Text style={styles.saveButtonText}>저장</Text>
