@@ -13,12 +13,14 @@ const BoardPage = ({}) => {
   }, []);
 
   const retrieveAllBoard = async () => {
-    fetch("http://192.168.123.109:8080/board/all", {
+    fetch("http://172.20.10.5:8080/board/all", {
       method: "GET",
     })
       .then((res) => res.json())
       .then((res) => {
         console.log(1, res);
+        console.log(2, res.data);
+        console.log(3, res.data.data);
         setBoards(res.data);
       });
   };
