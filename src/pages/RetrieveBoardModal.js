@@ -22,7 +22,7 @@ const RetrieveBoardModal = ({ modalVisible, closeModal, id }) => {
   });
 
   const retrieveBoardById = async () => {
-    fetch("http://192.168.123.109:8080/board/{id}", {
+    fetch("http://172.20.10.5:8080/board/{id}", {
       method: "GET",
     })
       .then((res) => res.json())
@@ -33,7 +33,7 @@ const RetrieveBoardModal = ({ modalVisible, closeModal, id }) => {
   };
 
   const retrieveReply = async () => {
-    fetch("http://192.168.123.109:8080/reply/{id}", {
+    fetch("http://172.20.10.5:8080/reply/{id}", {
       method: "GET",
     })
       .then((res) => res.json())
@@ -64,7 +64,7 @@ const RetrieveBoardModal = ({ modalVisible, closeModal, id }) => {
   };
 
   const createReply = async (replyRequest) => {
-    fetch("http://192.168.123.109:8080/reply", {
+    fetch("http://172.20.10.5:8080/reply", {
       method: "POST",
       headers: {
         "Content-Type": "application/json; charset=utf-8",

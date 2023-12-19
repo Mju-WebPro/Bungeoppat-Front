@@ -8,6 +8,11 @@ export const ContentRoutes = {
   StoreinfoPage: { name: "StoreinfoPage", label: "가게 정보 화면" },
   StoreListPage: { name: "StoreListPage", label: "가게 목록 화면" },
   OrderPage: { name: "OrderPage", label: "주문 화면" },
-  TickPage: { name: "TickPage", label: "티켓 화면" },
+  WebViewPage: {name : "WebViewPage", label : "결제 화면"},
+  TicketPage: { name: "TicketPage", label: "티켓 화면" },
+  // OrderStack: {name: "OrderStack", label: "주문 스택"},
+  OrderListPage: { name: "OrderListPage", label: "주문 내역 화면" },
+  WriteReviewPage: { name: "WriteReviewPage", label: "리뷰 작성 화면" },
+  OrderListStack: { name: "OrderListStack", label: "주문 내역 스택"},
   BoardPage: { name: "BoardPage", label: "게시판 화면" },
 };

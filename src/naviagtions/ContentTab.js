@@ -4,10 +4,10 @@ import { ContentRoutes } from "./routes";
 // import HomePage from '../pages/HomePage';
 // import StoreInfoPage from '../pages/StoreinfoPage';
 // import StoreListPage from '../pages/StoreListPage';
-import TicketPage from '../pages/TicketPage';
-import BoardPage from '../pages/BoardPage';
+import BoardPage from "../pages/BoardPage";
+import { Image } from "react-native";
 import MapStack from './MapStack';
-import { Image } from 'react-native';
+import OrderListStack from './OrderListStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -18,10 +18,13 @@ const ContentTab = () => {
             case ContentRoutes.MapStack.name:
                 iconSource = focused ? require('../images/homeIcon.png') : require('../images/homeIcon.png');
                 break;
-            case ContentRoutes.BoardPage.name:
+            // case ContentRoutes.OrderStack.name:
+            //   iconSource = focused ? require('../images/fish.png') : require('../images/fish.png');
+            //   break;
+            case ContentRoutes.OrderListStack.name:
                 iconSource = focused ? require('../images/fish.png') : require('../images/fish.png');
                 break;
-            case ContentRoutes.TickPage.name:
+            case ContentRoutes.BoardPage.name:
                 iconSource = focused ? require('../images/fish.png') : require('../images/fish.png');
                 break;
             default:
@@ -44,8 +47,9 @@ const ContentTab = () => {
             // }}
         >
             <Tab.Screen name={ContentRoutes.MapStack.name} component={MapStack} />
+            {/* <Tab.Screen name={ContentRoutes.OrderStack.name} component={OrderStack} /> */}
+            <Tab.Screen name={ContentRoutes.OrderListStack.name} component={OrderListStack} />
             <Tab.Screen name={ContentRoutes.BoardPage.name} component={BoardPage} />
-            <Tab.Screen name={ContentRoutes.TickPage.name} component={TicketPage} />
         </Tab.Navigator>
     );
 };

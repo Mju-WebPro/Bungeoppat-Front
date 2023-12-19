@@ -39,7 +39,7 @@ const CreateBoardModal = ({ modalVisible, closeModal }) => {
   };
 
   const createBoard = async (boardRequestDto) => {
-    fetch("http://192.168.123.109:8080/board", {
+    fetch("http://172.20.10.5:8080/board", {
       method: "POST",
       headers: {
         "Content-Type": "application/json; charset=utf-8",

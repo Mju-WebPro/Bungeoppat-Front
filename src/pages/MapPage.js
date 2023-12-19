@@ -31,7 +31,7 @@ const MapPage = ({ route, navigation }) => {
 
     const fetchStoreData = async () => {
         try {
-            const backendEndpoint =  `http://192.168.0.13:8080/stores/near?latitude=${region.latitude}&longitude=${region.longitude}`
+            const backendEndpoint =  `http://172.20.10.5:8080/stores/near?latitude=${region.latitude}&longitude=${region.longitude}`
             const response = await fetch(backendEndpoint);
             if (!response.ok) {
                 throw new Error('Network response was not ok.');
@@ -46,7 +46,7 @@ const MapPage = ({ route, navigation }) => {
 
     const handleSearch = async () => {
         try {
-            const backendEndpoint =  `http://192.168.0.13:8080/places/search?keyword=${searchKeyword}`
+            const backendEndpoint =  `http://172.20.10.5:8080/places/search?keyword=${searchKeyword}`
             const response = await fetch(backendEndpoint);
             if (!response.ok) {
                 throw new Error('Network response was not ok.');
@@ -62,7 +62,7 @@ const MapPage = ({ route, navigation }) => {
                     longitudeDelta: 0.005,
                 });
                 console.log(firstMarker);
-                const backendEndpoint2 =  `http://192.168.0.13:8080/stores/near?latitude=${firstMarker.latitude}&longitude=${firstMarker.longitude}`
+                const backendEndpoint2 =  `http://172.20.10.5:8080/stores/near?latitude=${firstMarker.latitude}&longitude=${firstMarker.longitude}`
                 const response2 = await fetch(backendEndpoint2);
                 if (!response2.ok) {
                     throw new Error('Network response was not ok.');
