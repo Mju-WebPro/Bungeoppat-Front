@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
-import { TouchableOpacity, View, StyleSheet, Text } from "react-native";
+import { TouchableOpacity, View, StyleSheet, Text, Image } from "react-native";
 import CreateBoardModal from "./CreateBoardModal";
+import RetrieveBoardModal from "./RetrieveBoardModal";
 
 const BoardPage = ({}) => {
-  const [modalVisible, setModalVisible] = useState(false);
+  const [createmodalVisible, setCreateModalVisible] = useState(false);
+  const [retrievemodalVisible, setRetrieveModalVisible] = useState(false);
   const [boards, setBoards] = useState([]);
 
   useEffect(() => {
@@ -17,16 +19,25 @@ const BoardPage = ({}) => {
       .then((res) => res.json())
       .then((res) => {
         console.log(1, res);
-        setBoards(res.data.data);
+        setBoards(res.data);
       });
   };
 
-  const openModal = () => {
-    setModalVisible(true);
+  const openCreateModal = () => {
+    setCreateModalVisible(true);
   };
 
-  const closeModal = () => {
-    setModalVisible(false);
+  const closeCreateModal = () => {
+    setCreateModalVisible(false);
+  };
+
+  // const openRetrieveModal = (boardid) => {
+  const openRetrieveModal = () => {
+    setRetrieveModalVisible(true);
+  };
+
+  const closeRetrieveModal = () => {
+    setRetrieveModalVisible(false);
   };
 
   return (
@@ -35,18 +46,52 @@ const BoardPage = ({}) => {
         <Text style={styles.title}>게시판</Text>
       </View>
       <View style={styles.boarder}>
+        <TouchableOpacity
+          style={styles.boardbar}
+          // onPress={openRetrieveModal(board.id)}
+          onPress={openRetrieveModal}
+        >
+          <View style={styles.titleLine}>
+            <Image
+              source={require("../images/fish.png")}
+              style={{ width: 24, height: 24 }}
+            />
+            <Text style={styles.titleText}>writer</Text>
+            <Text style={styles.titleText}>title</Text>
+            <Text style={styles.titleText}>date</Text>
+          </View>
+        </TouchableOpacity>
         {boards &&
           boards.map((board) => (
-            <View>
-              <Text style={styles.title}>{board.title}</Text>
-              <Text style={styles.title}>{board.content}</Text>
-              <Text style={styles.title}>{board.date}</Text>
+            <View style={styles.boardbar}>
+              <TouchableOpacity
+                style={styles.boardbar}
+                // onPress={openRetrieveModal(board.id)}
+                onPress={openRetrieveModal}
+              >
+                <View style={styles.titleLine}>
+                  <Image
+                    source={require("../images/fish.png")}
+                    style={{ width: 24, height: 24 }}
+                  />
+                  <Text style={styles.titleText}>writer</Text>
+                  <Text style={styles.titleText}>title</Text>
+                  <Text style={styles.titleText}>date</Text>
+                </View>
+              </TouchableOpacity>
             </View>
           ))}
-        <CreateBoardModal modalVisible={modalVisible} closeModal={closeModal} />
+        <CreateBoardModal
+          modalVisible={createmodalVisible}
+          closeModal={closeCreateModal}
+        />
+        <RetrieveBoardModal
+          modalVisible={retrievemodalVisible}
+          closeModal={closeRetrieveModal}
+        />
       </View>
       <View style={styles.bottomBar}>
-        <TouchableOpacity style={styles.button} onPress={openModal}>
+        <TouchableOpacity style={styles.button} onPress={openCreateModal}>
           <Text style={styles.buttonText}>게시글 생성</Text>
         </TouchableOpacity>
       </View>
@@ -71,7 +116,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 30,
-    marginTop: 30,
+    marginTop: 40,
   },
   boarder: {
     flex: 1,
@@ -81,20 +126,41 @@ const styles = StyleSheet.create({
   bottomBar: {
     backgroundColor: "#F2D98D",
     width: "100%",
-    height: 150,
+    height: 100,
     top: 20,
     alignItems: "center",
     justifyContent: "center",
   },
   button: {
     borderWidth: 1,
-    borderColor: "black",
+    borderColor: "#FFF7DC",
     marginBottom: 10,
+    borderRadius: 100,
   },
   buttonText: {
     color: "black",
     fontWeight: "bold",
     margin: 10,
+  },
+  boardbar: {
+    borderWidth: 1,
+    borderColor: "#F2D98D",
+    width: 300,
+    height: 50,
+    top: -250,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 10,
+    borderRadius: 100,
+  },
+  titleLine: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  titleText: {
+    margin: 2,
+    fontWeight: "bold",
   },
 });
 

@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
-    backgroundColor: "white",
+    backgroundColor: "#FFF7DC",
     padding: 20,
     borderRadius: 10,
     width: "80%",
@@ -121,11 +121,12 @@ const styles = StyleSheet.create({
   },
   button: {
     borderWidth: 1,
-    borderColor: "black",
+    borderRadius: 5,
+    borderColor: "lightgrey",
     marginBottom: 10,
   },
   saveButton: {
-    backgroundColor: "white",
+    backgroundColor: "#FFF7DC",
     padding: 10,
     borderRadius: 5,
     alignItems: "center",
@@ -135,7 +136,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   cancleButton: {
-    backgroundColor: "white",
+    backgroundColor: "#FFF7DC",
     borderRadius: 5,
     alignItems: "center",
   },
