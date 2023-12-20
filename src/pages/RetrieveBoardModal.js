@@ -9,20 +9,23 @@ import {
   Image,
 } from "react-native";
 import HorizontalLine from "../component/axios/css/HorizontalLine";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const RetrieveBoardModal = ({ modalVisible, closeModal, id }) => {
+const RetrieveBoardModal = ({ modalVisible, closeModal }) => {
   const [board, setBoard] = useState();
   const [existReply, setExistReply] = useState();
   const [reply, setReply] = useState();
+  
+  useEffect(() => {
+    retrieveBoardById().then(()=> console.log("SUCCESS_RETRIEVE"));
+    retrieveReply().then(() => console.log("SUCCESS_REPLY_RETRIEVE"));
+  }, []);
 
   useEffect(() => {
-    retrieveBoardById().then(console.log("SUCCESS_RETRIEVE"));
-    retrieveReply().then(console.log("SUCCESS_REPLY_RETRIEVE"));
-  });
+    console.log(board); // 업데이트된 board 상태를 출력
+  }, [board]);
 
   const retrieveBoardById = async () => {
-    fetch("http://172.20.10.5:8080/board/{id}", {
+    fetch("http://ec2-3-35-203-41.ap-northeast-2.compute.amazonaws.com:8080/board/1", {
       method: "GET",
     })
       .then((res) => res.json())
@@ -33,7 +36,7 @@ const RetrieveBoardModal = ({ modalVisible, closeModal, id }) => {
   };
 
   const retrieveReply = async () => {
-    fetch("http://172.20.10.5:8080/reply/{id}", {
+    fetch("http://ec2-3-35-203-41.ap-northeast-2.compute.amazonaws.com:8080/reply/1", {
       method: "GET",
     })
       .then((res) => res.json())
@@ -43,20 +46,10 @@ const RetrieveBoardModal = ({ modalVisible, closeModal, id }) => {
       });
   };
 
-  const getUserId = async () => {
-    const userData = await AsyncStorage.getItem("userData");
-    if (userData) {
-      const data = JSON.parse(userData);
-      userId = data.userId;
-      return userId;
-    }
-  };
-
   const handleSave = async () => {
-    const userId = await getUserId();
     const replyRequest = {
-      boardId: "1234",
-      userId: userId,
+      boardId: 1,
+      userId: 1,
       replyContent: reply,
     };
     console.log("data:", replyRequest);
@@ -64,7 +57,7 @@ const RetrieveBoardModal = ({ modalVisible, closeModal, id }) => {
   };
 
   const createReply = async (replyRequest) => {
-    fetch("http://172.20.10.5:8080/reply", {
+    fetch("http://ec2-3-35-203-41.ap-northeast-2.compute.amazonaws.com:8080/reply", {
       method: "POST",
       headers: {
         "Content-Type": "application/json; charset=utf-8",
@@ -87,11 +80,11 @@ const RetrieveBoardModal = ({ modalVisible, closeModal, id }) => {
       <View style={styles.modalContainer}>
         <View style={styles.modalTitle}>
           <Text style={styles.titleLine}>게시글 제목</Text>
-          <Text>TEST TITLE</Text>
+          <Text>{board && board.title}</Text>
         </View>
         <View style={styles.modalContent}>
           <Text style={styles.contentLine}>게시글 내용</Text>
-          <Text>TEST CONTENT</Text>
+          <Text>{board && board.content}</Text>
           <TextInput
             style={[styles.replyInput, { width: 270 }]}
             placeholder="댓글"
@@ -107,11 +100,10 @@ const RetrieveBoardModal = ({ modalVisible, closeModal, id }) => {
             />
           </TouchableOpacity>
           <HorizontalLine />
-          <Text style={styles.replyText}> TEST </Text>
           {existReply &&
-            existReply.map((reple) => (
+            existReply.map((reply) => (
               <View>
-                <Text style={styles.replyText}> {reple.replyContent} </Text>
+                <Text style={styles.replyText}> {reply.replyContent} </Text>
               </View>
             ))}
         </View>

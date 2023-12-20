@@ -1,33 +1,77 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Image, Text, StyleSheet,TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const TicketPage = ({ route }) => {
-
+    const navigation = useNavigation();
     const {selectedMinutes, quantityPap, quantityCream, item} = route.params || {};
+    const [paymentAmount, setPaymentAmount] = useState(null);
 
-
-    fetch('http://192.168.219.144:8080/payment/createPayment', {
-    method: 'POST',
-        headers: {
+    useEffect(() => {
+        fetch('http://ec2-3-35-203-41.ap-northeast-2.compute.amazonaws.com:8080/payment/createPayment', {
+          method: 'POST',
+          headers: {
             'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+          },
+          body: JSON.stringify({
             storeId: item.id,
             popFishNum: quantityPap,
             suFishNum: quantityCream,
-        }),
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Payment created successfully:', data);
-    })
-    .catch(error => {
-        console.error('Error creating payment:', error);
-    });
+          }),
+        })
+          .then(response => response.json())
+          .then(data => {
+            console.log('Payment created successfully:', data);
+            setPaymentAmount(data.payment.amount);
+            // Review creation request
+            fetch('http://ec2-3-35-203-41.ap-northeast-2.compute.amazonaws.com:8080/review/createReview', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            })
+              .then(reviewResponse => reviewResponse.json())
+              .then(reviewData => {
+                console.log('Review created successfully:', reviewData);
+      
+                // UserOrder creation request
+                fetch('http://ec2-3-35-203-41.ap-northeast-2.compute.amazonaws.com:8080/userOrder/createOrder', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({
+                    storeId: item.id, 
+                    userId: 1,
+                    reviewId: reviewData.review.id, 
+                    paymentId: data.payment.id, 
+                    quantity: quantityPap + quantityCream, 
+                    price: data.payment.amount,
+                    pickUpDate: selectedMinutes,
+                  }),
+                })
+                  .then(userOrderResponse => userOrderResponse.json())
+                  .then(userOrderData => {
+                    console.log('UserOrder created successfully:', userOrderData);
+                  })
+                  .catch(userOrderError => {
+                    console.error('Error creating UserOrder:', userOrderError);
+                  });
+              })
+              .catch(reviewError => {
+                console.error('Error creating review:', reviewError);
+              });
+          })
+          .catch(paymentError => {
+            console.error('Error creating payment:', paymentError);
+          });
+      }, []);
 
     const handlePickupCompletion = () => {
-        console.log('픽업이 완료되었습니다.');
+        navigation.navigate('MainPage');
     };
+
+
     return (
         <View style={styles.container}>
             <Image source={require('../images/sideBar.png')} style={styles.sideBar} />
@@ -53,19 +97,25 @@ const TicketPage = ({ route }) => {
                     <View style={styles.productContainer}>
                         <Text style={styles.productText}>팥 붕어빵</Text>
                         <View style={styles.quantityContainer}>
-                            <Text style={styles.productText}>3 개</Text>
+                        <Text style={styles.productText}>{quantityPap} 개</Text>
                         </View>
                     </View>
                     <View style={styles.productContainer}>
                         <Text style={styles.productText}>슈크림 붕어빵</Text>
                         <View style={styles.quantityContainer}>
-                            <Text style={styles.productText}>2 개</Text>
+                        <Text style={styles.productText}>{quantityCream} 개</Text>
+                        </View>
+                    </View>
+                    <View style={styles.productContainer}>
+                        <Text style={styles.productText}>가격</Text>
+                        <View style={styles.quantityContainer}>
+                        <Text style={styles.productText}>{paymentAmount !== null ? `${paymentAmount}` : ''}</Text>
                         </View>
                     </View>
                 </View>
             </View>
             <TouchableOpacity style={styles.pickupButton} onPress={handlePickupCompletion}>
-                <Text style={styles.pickupButtonText}>픽업완료</Text>
+                <Text style={styles.pickupButtonText}>주문 완료</Text>
             </TouchableOpacity>
         </View>
     );
@@ -86,9 +136,9 @@ const styles = StyleSheet.create({
     },
     blackRectangle: {
         position: 'absolute',
-        top: 230,
-        left: 86,
-        transform: [{ translateX: -50 }, { translateY: -50 }],
+        top: '60%',  // 60% 위치에 정렬
+        left: '50%',  // 50% 위치에 정렬
+        transform: [{ translateX: -160 }, { translateY: -225 }],  // 컨테이너의 절반 크기만큼 이동
         backgroundColor: 'rgba(0, 0, 0, 0.8)',
         width: 320,
         height: 410,
@@ -164,9 +214,10 @@ const styles = StyleSheet.create({
     },
     productText: {
         color: "#000",
-        fontSize: 18,
+        fontSize: 15,
         fontWeight: 'bold',
-        width: '50%',
+        width: '80%',
+        
     },
     quantityContainer: {
         flexDirection: 'column',
@@ -179,7 +230,7 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         width: 85,
         height: 40,
-        marginLeft: 40,
+        marginLeft: -30,
         marginTop: 10,
     },
     pickupButton: {
@@ -190,7 +241,6 @@ const styles = StyleSheet.create({
         top: -45,
     },
     pickupButtonText: {
-        color: 'white',
         fontWeight: 'bold',
         fontSize: 16,
         textAlign: 'center',

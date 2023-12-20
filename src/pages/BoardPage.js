@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { TouchableOpacity, View, StyleSheet, Text, Image } from "react-native";
+import { TouchableOpacity, View, StyleSheet, Text, Image, ScrollView } from "react-native";
 import CreateBoardModal from "./CreateBoardModal";
 import RetrieveBoardModal from "./RetrieveBoardModal";
 
@@ -9,18 +9,15 @@ const BoardPage = ({}) => {
   const [boards, setBoards] = useState([]);
 
   useEffect(() => {
-    retrieveAllBoard().then(console.log("SUCCESS_RETRIEVE"));
+    retrieveAllBoard().then(() => console.log("SUCCESS_RETRIEVE"));
   }, []);
 
   const retrieveAllBoard = async () => {
-    fetch("http://172.20.10.5:8080/board/all", {
+    fetch("http://ec2-3-35-203-41.ap-northeast-2.compute.amazonaws.com:8080/board/all", {
       method: "GET",
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log(1, res);
-        console.log(2, res.data);
-        console.log(3, res.data.data);
         setBoards(res.data);
       });
   };
@@ -47,41 +44,28 @@ const BoardPage = ({}) => {
       <View style={styles.header}>
         <Text style={styles.title}>게시판</Text>
       </View>
+      <ScrollView>
       <View style={styles.boarder}>
-        <TouchableOpacity
-          style={styles.boardbar}
-          // onPress={openRetrieveModal(board.id)}
-          onPress={openRetrieveModal}
-        >
-          <View style={styles.titleLine}>
-            <Image
-              source={require("../images/fish.png")}
-              style={{ width: 24, height: 24 }}
-            />
-            <Text style={styles.titleText}>writer</Text>
-            <Text style={styles.titleText}>title</Text>
-            <Text style={styles.titleText}>date</Text>
-          </View>
-        </TouchableOpacity>
         {boards &&
           boards.map((board) => (
-            <View style={styles.boardbar}>
+            // <View style={styles.boardbar}>
               <TouchableOpacity
                 style={styles.boardbar}
-                // onPress={openRetrieveModal(board.id)}
-                onPress={openRetrieveModal}
+                onPress={() => openRetrieveModal(1)}
+                // onPress={openRetrieveModal}
               >
                 <View style={styles.titleLine}>
                   <Image
                     source={require("../images/fish.png")}
-                    style={{ width: 24, height: 24 }}
+                    style={{ width: 30, height: 30 }}
                   />
-                  <Text style={styles.titleText}>writer</Text>
-                  <Text style={styles.titleText}>title</Text>
-                  <Text style={styles.titleText}>date</Text>
+                  <View style={{ marginLeft: 10, flexDirection: 'column' }}>
+                    <Text style={styles.titleText}>{board.title}</Text>
+                    <Text style={styles.dateText}>{board.date}</Text>
+                </View>
                 </View>
               </TouchableOpacity>
-            </View>
+            // </View>
           ))}
         <CreateBoardModal
           modalVisible={createmodalVisible}
@@ -92,7 +76,8 @@ const BoardPage = ({}) => {
           closeModal={closeRetrieveModal}
         />
       </View>
-      <View style={styles.bottomBar}>
+      </ScrollView>
+      <View>
         <TouchableOpacity style={styles.button} onPress={openCreateModal}>
           <Text style={styles.buttonText}>게시글 생성</Text>
         </TouchableOpacity>
@@ -122,34 +107,30 @@ const styles = StyleSheet.create({
   },
   boarder: {
     flex: 1,
+    width: "100%",
     justifyContent: "center",
     alignContent: "center",
   },
-  bottomBar: {
-    backgroundColor: "#F2D98D",
-    width: "100%",
-    height: 100,
-    top: 20,
-    alignItems: "center",
-    justifyContent: "center",
-  },
+
   button: {
-    borderWidth: 1,
-    borderColor: "#FFF7DC",
+    backgroundColor: '#F2D98D',
+    padding: 10,
+    marginTop: 10,
     marginBottom: 10,
-    borderRadius: 100,
+    borderRadius: 10,
+    alignItems: 'center',
   },
   buttonText: {
-    color: "black",
-    fontWeight: "bold",
-    margin: 10,
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#333333',
   },
   boardbar: {
-    borderWidth: 1,
+    borderWidth: 3,
     borderColor: "#F2D98D",
     width: 300,
-    height: 50,
-    top: -250,
+    height: 100,
+    // top: -250,
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 10,
@@ -159,10 +140,17 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    fontSize: 100,
   },
   titleText: {
     margin: 2,
     fontWeight: "bold",
+    fontSize: 20,
+  },
+  dateText: {
+    margin: 2,
+    fontWeight: "bold",
+    fontSize: 15,
   },
 });
 

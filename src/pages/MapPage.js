@@ -29,9 +29,43 @@ const MapPage = ({ route, navigation }) => {
         }
     }, [searchKeyword]);
 
+    const storeUserRegion = async (id) => {
+        try {
+          const response = await fetch("http://ec2-3-35-203-41.ap-northeast-2.compute.amazonaws.com:8080/region", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              id: id,
+              region: [
+                region.latitude,
+                region.longitude,
+                region.latitudeDelta,
+                region.longitudeDelta,
+              ],
+            }),
+          });
+    
+          if (!response.ok) {
+            console.error(
+              "Failed to store user region. Server returned:",
+              response.status,
+              response.statusText
+            );
+            return;
+          }
+    
+          const result = await response.json();
+          console.log("User region stored successfully:", result);
+        } catch (error) {
+          console.error("Error storing user region:", error.message);
+        }
+      };
+
     const fetchStoreData = async () => {
         try {
-            const backendEndpoint =  `http://172.20.10.5:8080/stores/near?latitude=${region.latitude}&longitude=${region.longitude}`
+            const backendEndpoint =  `http://ec2-3-35-203-41.ap-northeast-2.compute.amazonaws.com:8080/stores/near?latitude=${region.latitude}&longitude=${region.longitude}`
             const response = await fetch(backendEndpoint);
             if (!response.ok) {
                 throw new Error('Network response was not ok.');
@@ -46,7 +80,7 @@ const MapPage = ({ route, navigation }) => {
 
     const handleSearch = async () => {
         try {
-            const backendEndpoint =  `http://172.20.10.5:8080/places/search?keyword=${searchKeyword}`
+            const backendEndpoint =  `http://ec2-3-35-203-41.ap-northeast-2.compute.amazonaws.com:8080/places/search?keyword=${searchKeyword}`
             const response = await fetch(backendEndpoint);
             if (!response.ok) {
                 throw new Error('Network response was not ok.');
@@ -62,7 +96,7 @@ const MapPage = ({ route, navigation }) => {
                     longitudeDelta: 0.005,
                 });
                 console.log(firstMarker);
-                const backendEndpoint2 =  `http://172.20.10.5:8080/stores/near?latitude=${firstMarker.latitude}&longitude=${firstMarker.longitude}`
+                const backendEndpoint2 =  `http://ec2-3-35-203-41.ap-northeast-2.compute.amazonaws.com:8080/stores/near?latitude=${firstMarker.latitude}&longitude=${firstMarker.longitude}`
                 const response2 = await fetch(backendEndpoint2);
                 if (!response2.ok) {
                     throw new Error('Network response was not ok.');

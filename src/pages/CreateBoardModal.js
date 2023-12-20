@@ -7,7 +7,6 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const CreateBoardModal = ({ modalVisible, closeModal }) => {
   const [title, setTitle] = useState("");
@@ -17,19 +16,9 @@ const CreateBoardModal = ({ modalVisible, closeModal }) => {
     closeModal();
   };
 
-  const getUserId = async () => {
-    const userData = await AsyncStorage.getItem("userData");
-    if (userData) {
-      const data = JSON.parse(userData);
-      userId = data.userId;
-      return userId;
-    }
-  };
-
   const handleSave = async () => {
-    const userId = await getUserId();
     const boardRequestDto = {
-      userId: userId,
+      userId: 1,
       title: title,
       content: content,
     };
@@ -39,7 +28,7 @@ const CreateBoardModal = ({ modalVisible, closeModal }) => {
   };
 
   const createBoard = async (boardRequestDto) => {
-    fetch("http://172.20.10.5:8080/board", {
+    fetch("http://ec2-3-35-203-41.ap-northeast-2.compute.amazonaws.com:8080/board", {
       method: "POST",
       headers: {
         "Content-Type": "application/json; charset=utf-8",

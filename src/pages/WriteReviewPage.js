@@ -22,13 +22,13 @@ const WriteReviewPage = ({ route }) => {
   const submitReview = async () => {
     try {
       const reviewData = {
-        reviewId: reviewInfo.id,
+        reviewId: reviewInfo,
         starRating: rating,
         content: reviewContent,
       };
 
       // Make a POST request
-      const response = await fetch('http://172.20.10.5:8080/review/write', {
+      const response = await fetch('http://ec2-3-35-203-41.ap-northeast-2.compute.amazonaws.com:8080/review/write', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -81,7 +81,7 @@ const WriteReviewPage = ({ route }) => {
       <StatusBar style="auto" />
       <View style={styles.header}>
         <Image
-          source={require("../images/mainBar.png")}
+          source={require("../images/sideBar.png")}
           style={styles.headerimage}
         />
       </View>
@@ -98,10 +98,11 @@ const WriteReviewPage = ({ route }) => {
             onChangeText={handleReviewContentChange}
             style={styles.reviewInput}
           />
-          <Button title="리뷰 작성 완료" onPress={submitReview} />
+          <TouchableOpacity onPress={submitReview} style={styles.submitButton}>
+            <Text style={styles.submitButtonText}>리뷰 작성 완료</Text>
+          </TouchableOpacity>
         </View>
       )}
-      <View style={styles.bottomBar}></View>
     </View>
   );
 };
@@ -130,7 +131,7 @@ const styles = StyleSheet.create({
         padding: 20,
     },
       reviewInput: {
-        height: 100,
+        height: 150,
         borderColor: 'gray',
         borderWidth: 1,
         marginBottom: 10,
@@ -145,15 +146,17 @@ const styles = StyleSheet.create({
         height: 40,
         margin: 5,
     },
-    bottomBar: {
-        backgroundColor: "#F2D98D",
-        height: 70,
-        paddingVertical: 15,
-        paddingHorizontal: 20,
-        position: 'absolute', // Add this line
-        bottom: 0, // Add this line
-        left: 0, // Add this line
-        right: 0, // Add this line
+    submitButton: {
+      backgroundColor: '#FFA50090',
+      paddingVertical: 10,
+      borderRadius: 10,
+      marginTop: 50,
+    },
+    submitButtonText: {
+      color: 'white',
+      fontSize: 16,
+      fontWeight: 'bold',
+      textAlign: 'center',
     },
 });
 

@@ -14,5 +14,8 @@ export const ContentRoutes = {
   OrderListPage: { name: "OrderListPage", label: "주문 내역 화면" },
   WriteReviewPage: { name: "WriteReviewPage", label: "리뷰 작성 화면" },
   OrderListStack: { name: "OrderListStack", label: "주문 내역 스택"},
+  MyPageStack: { name: "MyPageStack", label: "마이페이지 스택"},
+  MyPage: { name: "MyPage", label: "마이페이지"},
   BoardPage: { name: "BoardPage", label: "게시판 화면" },
+
 };

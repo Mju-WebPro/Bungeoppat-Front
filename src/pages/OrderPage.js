@@ -122,18 +122,20 @@ const OrderPage = ({ navigation, route }) => {
                 </View>
             </View>
             <View style={styles.bottomBar}>
-                <Button
-                    title="이동하기"
-                    onPress={() =>
-                        navigation.navigate("WebViewPage", {
-                          uri: "http://192.168.219.144:54079/payment.html",
-                          selectedMinutes: selectedMinutes,
-                          quantityPap: quantityPap,
-                          quantityCream: quantityCream,
-                          item: item,
-                        })
-                    }
-                />
+            <TouchableOpacity
+                style={styles.paymentButton}
+                onPress={() =>
+                    navigation.navigate("WebViewPage", {
+                        uri: "http://ec2-3-35-203-41.ap-northeast-2.compute.amazonaws.com:61968/payment.html",
+                        selectedMinutes: selectedMinutes,
+                        quantityPap: quantityPap,
+                        quantityCream: quantityCream,
+                        item: item,
+                    })
+                }
+            >
+            <Text style={styles.buttonText}>결제하기</Text>
+            </TouchableOpacity>
             </View>
         </View>
     );
@@ -289,6 +291,20 @@ const styles = StyleSheet.create({
         padding: 5,
         width: 220,
         justifyContent: "space-between",
+    },
+    paymentButton: {
+        backgroundColor: '#F2D98D',
+        color: 'white',
+        fontSize: 16,
+        fontWeight: 'bold',
+        padding: 10,
+        borderRadius: 10,
+        marginTop: 20,
+    },
+    buttonText: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'center',
     },
 });
 
