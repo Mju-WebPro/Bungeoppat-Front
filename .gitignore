@@ -2,11 +2,12 @@
 
 # dependencies
 node_modules/
-
+android/app/src/main/AndroidManifest.xml
 # Expo
 .expo/
 dist/
 web-build/
+
 
 # Native
 *.orig.*
