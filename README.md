@@ -1,4 +1,4 @@
-# Mju-WebPro / FRONT-ENd
+# Mju-WebPro / FRONT-END
 ## Bungeoppat Application.
 ### MJU 23-2 Weppro 2
 명지대 23-2 웹 프로그래밍 2 붕어팟 앱
@@ -21,3 +21,4 @@ DBMS : MySQL(RDS)+Redis
 
 # 참고 자료
 [[웹프2]5조_최종보고서.pdf](https://github.com/Mju-WebPro/Bungeoppat-Back/files/13723348/2.5._.pdf)
+Backend : https://github.com/Mju-WebPro/Bungeoppat-Back.git
