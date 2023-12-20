@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- jQuery -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
+    <!-- iamport.payment.js -->
+    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
+    <style></style>
+    <script>
+        var IMP = window.IMP; 
+        IMP.init("imp26662343");
+
+        var onloadHandler = function () {
+            requestPay();
+            // 페이지 로드 이벤트 핸들러를 해제
+            window.onload = null;
+        };
+
+        
+
+        window.onload = onloadHandler;
+        
+        function requestPay() {
+            IMP.request_pay({
+                pg: "kicc",
+                pay_method: "card",
+                merchant_uid: "merchant" + new Date().getTime(),
+                name: "붕어빵",	
+                amount: 7000,
+                buyer_email: "choijonghyen@gmail.com",
+                buyer_name: "겨울이",
+                buyer_tel: "010-5208-3308",
+                // buyer_addr: "서울특별시 서대문구 남가좌동",
+                // buyer_postcode: "03710"
+            }, function(rsp) {
+                console.log(rsp);
+                console.log(rsp.imp_uid);
+                $.ajax({
+                   type: 'POST',
+                   url: 'http://172.20.10.5:8080/payment/validation/' + rsp.imp_uid
+                }).done(function(data) {
+                    if(rsp.paid_amount === data.response.amount){
+                        alert("결제 성공");
+                    } else {
+                        alert("결제 실패");
+                    }
+                });
+            });
+        }
+    </script>
+    <meta charset="UTF-8">
+    <title>Sample Payment</title>
+</head>
+<body>
+    <!-- 버튼을 누르지 않아도 자동으로 실행 -->
+</body>
+</html>
